@@ -1,17 +1,13 @@
 import logging
-from telegram import Update, Bot
+from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
-from telegram import ReplyKeyboardMarkup, KeyboardButton
-# فعال کردن لاگینگ برای دیباگ راحت‌تر
+from config import TOKEN  # وارد کردن توکن از فایل confing.py
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 
-TOKEN = "8095298226:AAE9bxIvC8yGnDqbN8zYlK_4DOFVRrLjZBM"
-keyboard = [
-    [KeyboardButton("📚 درس‌نامه"), KeyboardButton("📝 تمرین"), KeyboardButton("📊 آزمون")]
-]
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [KeyboardButton("📚 درس‌نامه"), KeyboardButton("📝 تمرین"), KeyboardButton("📊 آزمون")]
@@ -20,16 +16,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "سلام! خوش آمدی به ربات آموزش ریاضی.\nلطفاً یکی از گزینه‌های زیر را انتخاب کن:",
         reply_markup=reply_markup
-    )
-
-reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "سلام! خوش آمدی به ربات آموزش ریاضی.\n"
-        "لطفاً یکی از گزینه‌های زیر را انتخاب کن:\n"
-        "📚 درس‌نامه\n"
-        "📝 تمرین\n"
-        "📊 آزمون"
     )
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
