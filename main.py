@@ -12,13 +12,17 @@ TOKEN = "8095298226:AAE9bxIvC8yGnDqbN8zYlK_4DOFVRrLjZBM"
 keyboard = [
     [KeyboardButton("📚 درس‌نامه"), KeyboardButton("📝 تمرین"), KeyboardButton("📊 آزمون")]
 ]
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [KeyboardButton("📚 درس‌نامه"), KeyboardButton("📝 تمرین"), KeyboardButton("📊 آزمون")]
+    ]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    await update.message.reply_text(
+        "سلام! خوش آمدی به ربات آموزش ریاضی.\nلطفاً یکی از گزینه‌های زیر را انتخاب کن:",
+        reply_markup=reply_markup
+    )
 
 reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
-await update.message.reply_text(
-    "سلام! خوش آمدی به ربات آموزش ریاضی.\nلطفاً یکی از گزینه‌های زیر را انتخاب کن:",
-    reply_markup=reply_markup
-)
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "سلام! خوش آمدی به ربات آموزش ریاضی.\n"
