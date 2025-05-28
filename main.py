@@ -15,7 +15,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     if text == "📚 درس‌نامه":
         await update.message.reply_text("فعلاً فقط درس‌نامه‌ی نمونه داریم")
-
+("
 🔹 فصل: اعداد صحیح
 🔸 جمع و تفریق اعداد صحیح:
 برای جمع اعداد صحیح، علامت‌ها را بررسی می‌کنیم...")
