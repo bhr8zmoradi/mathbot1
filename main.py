@@ -1,48 +1,39 @@
-import logging
-from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
-from config import TOKEN  # وارد کردن توکن از فایل config.py
+from telegram import Update, ReplyKeyboardMarkup
+from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
+from config import TOKEN
+import json
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+# بارگذاری فایل JSON
+with open("lessons.json", "r", encoding="utf-8") as f:
+    lessons = json.load(f)
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [
-        [KeyboardButton("📚 درس‌نامه"), KeyboardButton("📝 تمرین"), KeyboardButton("📊 آزمون")]
-    ]
-    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
-    await update.message.reply_text(
-        "سلام! خوش آمدی به ربات آموزش ریاضی.\nلطفاً یکی از گزینه‌های زیر را انتخاب کن:",
-        reply_markup=reply_markup
-    )
+# تعریف کیبورد
+main_menu = [["📘 درس‌نامه", "📝 تمرین"], ["🧪 آزمون"]]
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
+    chapter = "اعداد صحیح"
 
-    if text == "📚 درس‌نامه":
-        await update.message.reply_text("""🔹 فصل: اعداد صحیح
-🔸 جمع و تفریق اعداد صحیح:
-برای جمع اعداد صحیح، علامت‌ها را بررسی می‌کنیم...""")
-
+    if text == "/start":
+        await update.message.reply_text(
+            "سلام! به ربات آموزش ریاضی خوش اومدی ✨\nیک گزینه رو انتخاب کن:",
+            reply_markup=ReplyKeyboardMarkup(main_menu, resize_keyboard=True)
+        )
+    elif text == "📘 درس‌نامه":
+        await update.message.reply_text(lessons[chapter]["درس‌نامه"])
     elif text == "📝 تمرین":
-        await update.message.reply_text("فعلاً تمرینی برای این بخش آماده نشده.")
-
-    elif text == "📊 آزمون":
-        await update.message.reply_text("فعلاً آزمونی برای این بخش آماده نشده.")
-
+        for exercise in lessons[chapter]["تمرین‌ها"]:
+            await update.message.reply_text(exercise)
+    elif text == "🧪 آزمون":
+        for q in lessons[chapter]["آزمون"]:
+            question_text = f"{q['سؤال']}\n" + "\n".join([f"- {opt}" for opt in q["گزینه‌ها"]])
+            await update.message.reply_text(question_text)
     else:
-        await update.message.reply_text("لطفاً یکی از گزینه‌های منو را انتخاب کن.")
+        await update.message.reply_text("گزینه‌ی نامعتبر! لطفاً از منو انتخاب کن.")
 
-def main():
-    app = ApplicationBuilder().token(TOKEN).build()
+# راه‌اندازی ربات
+app = ApplicationBuilder().token(TOKEN).build()
+app.add_handler(MessageHandler(filters.TEXT, handle_message))
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    print("ربات در حال اجراست...")
+if __name__ == "__main__":
     app.run_polling()
-
-if __name__ == '__main__':
-    main()
