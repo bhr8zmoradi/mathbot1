@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = "YOUR_BOT_TOKEN"  # توکن رباتت رو اینجا بذار
+TOKEN = "8095298226:AAE9bxIvC8yGnDqbN8zYlK_4DOFVRrLjZBM"  # توکن رباتت رو اینجا بذار
 
 main_menu = [["📚 درس‌نامه"], ["📝 تمرین"], ["🧪 آزمون"], ["❓ سوال‌های شما"]]
 
